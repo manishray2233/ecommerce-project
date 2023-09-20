@@ -6,20 +6,22 @@ import {
   Image,
   KeyboardAvoidingView,
   TextInput,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
     >
-      //? Image
       <View>
         <Image
           style={{ width: 150, height: 100 }}
@@ -28,7 +30,7 @@ const LoginScreen = () => {
           }}
         />
       </View>
-      // ? Heading
+
       <KeyboardAvoidingView>
         <View style={{ alignItems: "center" }}>
           <Text
@@ -42,7 +44,7 @@ const LoginScreen = () => {
             Login In to your Account
           </Text>
         </View>
-        // ? Email Section
+
         <View style={{ marginTop: 70 }}>
           <View
             style={{
@@ -74,7 +76,7 @@ const LoginScreen = () => {
             />
           </View>
         </View>
-        // ? Password Section
+
         <View style={{ marginTop: 5 }}>
           <View
             style={{
@@ -107,7 +109,7 @@ const LoginScreen = () => {
             />
           </View>
         </View>
-        
+
         <View
           style={{
             marginTop: 12,
@@ -121,6 +123,39 @@ const LoginScreen = () => {
             Forgot Password
           </Text>
         </View>
+
+        <View style={{ marginTop: 80 }} />
+
+        <Pressable
+          style={{
+            width: 200,
+            backgroundColor: "#FEBE10",
+            borderRadius: 6,
+            marginLeft: "auto",
+            marginRight: "auto",
+            padding: 15,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            Login
+          </Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => navigation.navigate("Register")}
+          style={{ marginTop: 12 }}
+        >
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 15 }}>
+            Don't have an account? Sign Up
+          </Text>
+        </Pressable>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
