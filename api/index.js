@@ -15,13 +15,10 @@ app.use(bodyParser.json());
 const jwt = require("jsonwebtoken");
 
 mongoose
-  .connect(
-    "mongodb+srv://manishray2233:manish@cluster0.xfybsve.mongodb.net/",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect("mongodb+srv://manishray2233:manish@cluster0.xfybsve.mongodb.net/", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -32,3 +29,5 @@ mongoose
 app.listen(port, () => {
   console.log("Server is running on port " + port);
 });
+
+// Endpoints to Register in the app

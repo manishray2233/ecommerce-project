@@ -20,7 +20,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
+      style={{ flex: 1, backgroundColor: "white", alignItems: "center",marginTop: 30, }}
     >
       <View>
         <Image
