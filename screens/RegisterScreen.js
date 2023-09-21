@@ -32,7 +32,7 @@ const RegisterScreen = () => {
     axios
       .post("http://192.168.0.107:8000/register", user)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         Alert.alert(
           "Registration successful",
           "You have been registered Successfully"
