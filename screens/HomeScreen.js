@@ -20,6 +20,8 @@ import axios from "axios";
 import ProductItem from "../components/ProductItem";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { BottomModal, SlideAnimation, ModalContent } from "react-native-modals";
 
 const HomeScreen = () => {
   const list = [
@@ -219,6 +221,9 @@ const HomeScreen = () => {
     setCompanyOpen(false);
   }, []);
 
+  const cart = useSelector((state) => state.cart.cart);
+
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <SafeAreaView
@@ -262,7 +267,8 @@ const HomeScreen = () => {
             <Feather name="mic" size={24} color="black" />
           </View>
 
-          <View
+          <Pressable
+            onPress={() => setModalVisible(!modalVisible)}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -273,13 +279,13 @@ const HomeScreen = () => {
           >
             <Ionicons name="location-outline" size={24} color="black" />
 
-            <Pressable>
+            <Pressable onPress={() => setModalVisible(!modalVisible)}>
               <Text style={{ fontSize: 13, fontWeight: "500" }}>
                 Deliver to Manish - Godbhaga 768111
               </Text>
             </Pressable>
             <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
-          </View>
+          </Pressable>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {list.map((item, index) => (
@@ -332,6 +338,18 @@ const HomeScreen = () => {
           >
             {deals.map((item, index) => (
               <Pressable
+                onPress={() =>
+                  navigation.navigate("Info", {
+                    id: item.id,
+                    title: item.title,
+                    price: item?.price,
+                    carouselImages: item.carouselImages,
+                    color: item?.color,
+                    size: item?.size,
+                    oldPrice: item?.oldPrice,
+                    item: item,
+                  })
+                }
                 style={{
                   marginVertical: 10,
                   flexDirection: "row",
@@ -465,6 +483,62 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <BottomModal
+        onBackdropPress={() => setModalVisible(!modalVisible)}
+        swipeDirection={["up", "down"]}
+        swipeThreshold={200}
+        modalAnimation={
+          new SlideAnimation({
+            slideFrom: "bottom",
+          })
+        }
+        onHardwareBackPress={() => setModalVisible(!modalVisible)}
+        visible={modalVisible}
+        onTouchOutside={() => setModalVisible(!modalVisible)}
+      >
+        <ModalContent style={{ width: "100%", height: 400 }}>
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: "500" }}>
+              Choose your Location
+            </Text>
+            <Text style={{ marginTop: 5, fontSize: 16, color: "gray" }}>
+              Select a delivery location to see product availability and
+              delivery opotions
+            </Text>
+          </View>
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {/* Already added addresses */}
+            <Pressable
+              style={{
+                width: 140,
+                height: 140,
+                borderColor: "#D0D0D0",
+                marginTop: 10,
+                borderWidth: 1,
+                padding: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "#0066b2",
+                  fontWeight: "500",
+                }}
+              >
+                Add an Address or pick-up point
+              </Text>
+            </Pressable>
+          </ScrollView>
+          <View>
+            <View>
+              
+            </View>
+          </View>
+        </ModalContent>
+      </BottomModal>
     </>
   );
 };

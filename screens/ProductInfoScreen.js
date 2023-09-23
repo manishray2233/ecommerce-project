@@ -22,12 +22,26 @@ import {
 import { SliderBox } from "react-native-image-slider-box";
 import axios from "axios";
 import { useRoute, useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/CartReducer";
 
 const ProductInfoScreen = () => {
   const route = useRoute();
   const { width } = Dimensions.get("window");
   const height = (width * 100) / 100;
   const navigation = useNavigation();
+  const [addedToCart, setAddedToCart] = useState(false);
+  const dispatch = useDispatch();
+
+  const addItemToCart = (item) => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 60000);
+  };
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "white" }}
@@ -147,6 +161,7 @@ const ProductInfoScreen = () => {
         <Text style={{ fontSize: 15, fontWeight: "500" }}>
           {route?.params?.title}
         </Text>
+
         <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 6 }}>
           ₹{route?.params?.price}
         </Text>
@@ -199,6 +214,7 @@ const ProductInfoScreen = () => {
       </Text>
 
       <Pressable
+        onPress={() => addItemToCart(route?.params?.item)}
         style={{
           backgroundColor: "#FFC72C",
           padding: 10,
@@ -209,7 +225,13 @@ const ProductInfoScreen = () => {
           marginVertical: 10,
         }}
       >
-        <Text>Add to Cart</Text>
+        {addedToCart ? (
+          <View>
+            <Text style={{ fontWeight: "bold" }}>Added to Cart</Text>
+          </View>
+        ) : (
+          <Text>Add to Cart</Text>
+        )}
       </Pressable>
 
       <Pressable
