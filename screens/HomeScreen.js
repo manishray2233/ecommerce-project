@@ -532,9 +532,33 @@ const HomeScreen = () => {
               </Text>
             </Pressable>
           </ScrollView>
-          <View>
-            <View>
-              
+
+          <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+            >
+              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+                Enter an Indian Pincode
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+            >
+              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+                Use My Current Location
+              </Text>
+            </View>
+
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+            >
+              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <Text style={{ color: "#0066b2", fontWeight: "400" }}>
+               Deliver Outside India
+              </Text>
             </View>
           </View>
         </ModalContent>
