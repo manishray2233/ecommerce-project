@@ -510,6 +510,10 @@ const HomeScreen = () => {
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {/* Already added addresses */}
             <Pressable
+              onPress={() => {
+                setModalVisible(false);
+                navigation.navigate("Address");
+              }}
               style={{
                 width: 140,
                 height: 140,
@@ -535,29 +539,29 @@ const HomeScreen = () => {
 
           <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
-              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <Entypo name="location-pin" size={22} color="#0066b2" />
               <Text style={{ color: "#0066b2", fontWeight: "400" }}>
                 Enter an Indian Pincode
               </Text>
             </View>
 
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
-              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <Ionicons name="locate-sharp" size={22} color="#0066b2" />
               <Text style={{ color: "#0066b2", fontWeight: "400" }}>
                 Use My Current Location
               </Text>
             </View>
 
             <View
-              style={{ flexDirection: "row", alignItems: "center", gap: "5" }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
-              <Entypo name="location-pin" size={24} color="#0066b2" />
+              <AntDesign name="earth" size={22} color="#0066b2" />
               <Text style={{ color: "#0066b2", fontWeight: "400" }}>
-               Deliver Outside India
+                Deliver outside India
               </Text>
             </View>
           </View>
