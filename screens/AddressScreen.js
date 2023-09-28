@@ -5,21 +5,24 @@ import {
   ScrollView,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwt_decode from "jwt-decode";
 import { UserType } from "../UserContext";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const AddressScreen = () => {
+  const navigation = useNavigation();
   const [name, setName] = useState("");
   const [mobileNo, setMobileNo] = useState("");
   const [houseNo, setHouseNo] = useState("");
   const [street, setStreet] = useState("");
   const [landmark, setLandmark] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  const [userId, setUserId] = useContext(UserType);
-
+  const { userId, setUserId } = useContext(UserType);
   useEffect(() => {
     const fetchUser = async () => {
       const token = await AsyncStorage.getItem("authToken");
@@ -29,10 +32,40 @@ const AddressScreen = () => {
     };
 
     fetchUser();
-  });
+  }, []);
+  console.log(userId);
+  const handleAddAddress = () => {
+    const address = {
+      name,
+      mobileNo,
+      houseNo,
+      street,
+      landmark,
+      postalCode,
+    };
 
+    axios
+      .post("http://192.168.0.107:8000/addresses", { userId, address })
+      .then((response) => {
+        Alert.alert("Success", "Addresses added successfully");
+        setName("");
+        setMobileNo("");
+        setHouseNo("");
+        setStreet("");
+        setLandmark("");
+        setPostalCode("");
+
+        setTimeout(() => {
+          navigation.goBack();
+        }, 500);
+      })
+      .catch((error) => {
+        Alert.alert("Error", "Failed to add address");
+        console.log("error", error);
+      });
+  };
   return (
-    <ScrollView style={{ marginTop: 20 }}>
+    <ScrollView style={{ marginTop: 40 }}>
       <View style={{ height: 50, backgroundColor: "#00CED1" }} />
 
       <View style={{ padding: 10 }}>
@@ -61,7 +94,6 @@ const AddressScreen = () => {
             value={name}
             onChangeText={(text) => setName(text)}
             placeholderTextColor={"black"}
-            placeholder="enter your name"
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -69,19 +101,19 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder="enter your name"
           />
         </View>
 
         <View>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Mobile number
+            Mobile numebr
           </Text>
 
           <TextInput
             value={mobileNo}
             onChangeText={(text) => setMobileNo(text)}
             placeholderTextColor={"black"}
-            placeholder="Mobile No"
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -89,19 +121,19 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder="Mobile No"
           />
         </View>
 
         <View style={{ marginVertical: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Flat, House No, Building, Company
+            Flat,House No,Building,Company
           </Text>
 
           <TextInput
             value={houseNo}
             onChangeText={(text) => setHouseNo(text)}
             placeholderTextColor={"black"}
-            placeholder=""
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -109,19 +141,18 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder=""
           />
         </View>
 
         <View>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            Area, Street, Sector, Village
+            Area,Street,sector,village
           </Text>
-
           <TextInput
             value={street}
             onChangeText={(text) => setStreet(text)}
             placeholderTextColor={"black"}
-            placeholder=""
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -129,17 +160,16 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder=""
           />
         </View>
 
         <View style={{ marginVertical: 10 }}>
           <Text style={{ fontSize: 15, fontWeight: "bold" }}>Landmark</Text>
-
           <TextInput
             value={landmark}
             onChangeText={(text) => setLandmark(text)}
             placeholderTextColor={"black"}
-            placeholder="Eg near apollo hospital"
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -147,6 +177,7 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder="Eg near appollo hospital"
           />
         </View>
 
@@ -157,7 +188,6 @@ const AddressScreen = () => {
             value={postalCode}
             onChangeText={(text) => setPostalCode(text)}
             placeholderTextColor={"black"}
-            placeholder="Enter Pincode"
             style={{
               padding: 10,
               borderColor: "#D0D0D0",
@@ -165,6 +195,7 @@ const AddressScreen = () => {
               marginTop: 10,
               borderRadius: 5,
             }}
+            placeholder="Enter Pincode"
           />
         </View>
 

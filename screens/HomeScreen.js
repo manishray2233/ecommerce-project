@@ -22,6 +22,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { BottomModal, SlideAnimation, ModalContent } from "react-native-modals";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserType } from "../UserContext";
+import jwt_decode from "jwt-decode";
 
 const HomeScreen = () => {
   const list = [
@@ -195,6 +198,8 @@ const HomeScreen = () => {
   ];
 
   const navigation = useNavigation();
+  const [addresses, setAddresses] = useState([]);
+  const { userId, setUserId } = useContext(UserType);
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("jewelery");
@@ -224,6 +229,36 @@ const HomeScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = await AsyncStorage.getItem("authToken");
+      const decodedToken = jwt_decode(token);
+      const userId = decodedToken.userId;
+      setUserId(userId);
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchAddresses();
+    }
+  }, [userId, modalVisible]);
+  const fetchAddresses = async () => {
+    try {
+      const response = await axios.get(
+        `http://192.168.0.107:8000/addresses/${userId}`
+      );
+      const { addresses } = response.data;
+
+      setAddresses(addresses);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  // console.log("addresses: ", addresses);
   return (
     <>
       <SafeAreaView
@@ -509,14 +544,39 @@ const HomeScreen = () => {
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {/* Already added addresses */}
+            {addresses?.map((item, index) => (
+              <Pressable
+                style={{
+                  width: 160,
+                  height: 150,
+                  borderColor: "#D0D0D0",
+                  borderWidth: 1,
+                  padding: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 3,
+                  marginRight: 15,
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                    {item?.name}
+                  </Text>
+                  <Entypo name="location-pin" size={24} color="red" />
+                </View>
+              </Pressable>
+            ))}
             <Pressable
               onPress={() => {
                 setModalVisible(false);
                 navigation.navigate("Address");
               }}
               style={{
-                width: 140,
-                height: 140,
+                width: 160,
+                height: 150,
                 borderColor: "#D0D0D0",
                 marginTop: 10,
                 borderWidth: 1,
