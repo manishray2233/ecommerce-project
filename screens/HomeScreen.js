@@ -203,6 +203,8 @@ const HomeScreen = () => {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("jewelery");
+  const [selectedAddress, setSelectedAddress] = useState("");
+  // console.log(selectedAddress);
   const [items, setItems] = useState([
     { label: "Men's clothing", value: "men's clothing" },
     { label: "jewelery", value: "jewelery" },
@@ -315,9 +317,15 @@ const HomeScreen = () => {
             <Ionicons name="location-outline" size={24} color="black" />
 
             <Pressable onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={{ fontSize: 13, fontWeight: "500" }}>
-                Deliver to Manish - Godbhaga 768111
-              </Text>
+              {selectedAddress ? (
+                <Text>
+                  Deliver to {selectedAddress?.name} - {selectedAddress?.street}
+                </Text>
+              ) : (
+                <Text style={{ fontSize: 13, fontWeight: "500" }}>
+                  Add a Address
+                </Text>
+              )}
             </Pressable>
             <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
           </Pressable>
@@ -392,7 +400,7 @@ const HomeScreen = () => {
                 }}
               >
                 <Image
-                  style={{ width: 200, height: 200, resizeMode: "contain" }}
+                  style={{ width: 180, height: 200, resizeMode: "contain" }}
                   source={{ uri: item?.image }}
                 />
               </Pressable>
@@ -434,7 +442,7 @@ const HomeScreen = () => {
                 }}
               >
                 <Image
-                  style={{ width: 150, height: 150, resizeMode: "contain" }}
+                  style={{ width: 140, height: 150, resizeMode: "contain" }}
                   source={{ uri: item?.image }}
                 />
 
@@ -546,6 +554,7 @@ const HomeScreen = () => {
             {/* Already added addresses */}
             {addresses?.map((item, index) => (
               <Pressable
+                onPress={() => setSelectedAddress(item)}
                 style={{
                   width: 160,
                   height: 150,
@@ -557,6 +566,8 @@ const HomeScreen = () => {
                   gap: 3,
                   marginRight: 15,
                   marginTop: 10,
+                  backgroundColor:
+                    selectedAddress === item ? "#FBCEB1" : "white",
                 }}
               >
                 <View
@@ -567,6 +578,24 @@ const HomeScreen = () => {
                   </Text>
                   <Entypo name="location-pin" size={24} color="red" />
                 </View>
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {item?.houseNo},{item?.landmark}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {item?.street}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  India, Bargarh
+                </Text>
               </Pressable>
             ))}
             <Pressable
@@ -597,7 +626,7 @@ const HomeScreen = () => {
             </Pressable>
           </ScrollView>
 
-          <View style={{ flexDirection: "column", gap: 7, marginBottom: 30 }}>
+          <View style={{ flexDirection: "column", gap: 7, marginBottom: 15 }}>
             <View
               style={{ flexDirection: "row", alignItems: "center", gap: 5 }}
             >
