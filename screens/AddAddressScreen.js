@@ -6,7 +6,7 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import {
   Feather,
   Ionicons,
@@ -14,7 +14,7 @@ import {
   Entypo,
   AntDesign,
 } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { UserType } from "../UserContext";
 import axios from "axios";
 
@@ -37,6 +37,13 @@ const AddAddressScreen = () => {
       console.log("error", error);
     }
   };
+
+  // refresh the addresses when the component comes to the focus i.e. basically when we navigate back
+  useFocusEffect(
+    useCallback(() => {
+      fetchAddresses();
+    },[])
+  );
   // console.log("addresses: ", addresses);
 
   return (
